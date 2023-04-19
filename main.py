@@ -1,6 +1,7 @@
 # https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 # https://youtu.be/ad0Ts8xdR-8
 
+import sys
 import time
 from time import sleep
 
@@ -50,18 +51,17 @@ resumeButton.click()
 
 sleep(3)
 
-# Initiate the list of currently available coursewares
-initCoursewareList = []
-courseware = browser.find_elements(By.XPATH, '//li[@style="cursor: pointer;"]')
-for course in courseware:
-    initCoursewareList.append(course.text)
+try:
+    if browser.find_element(By.TAG_NAME, "video"):
+        video = browser.find_element(By.TAG_NAME, "video")
+        video.click()
+except Exception as e:
+    print("\n\tNo video detected.")
 
-# currentCourseware = browser.find_element(
-#     By.XPATH,
-#     '//li[@style="cursor: pointer; background-color: rgba(249, 141, 38, 0.24);"]',
-# )
-# Clicking Resume Learning button will automatically go to the most recent courseware so currentCourseware will be the last element in the list
-# initCoursewareList.append(currentCourseware.text)
+
+def endProcess():
+    browser.quit()
+    sys.exit()
 
 
 def writeToTextAndPlay(video):
@@ -70,6 +70,7 @@ def writeToTextAndPlay(video):
     videoSrc = video.get_attribute("src")
     textFile = open("videoURLs.txt", "a", encoding="utf-8")
     textFile.write(videoSrc)
+    textFile.write("\n")
     textFile.close()
 
 
@@ -83,15 +84,16 @@ def checkIfTest():
             match option.lower():
                 case "n":
                     print("\n\tClosing browser...")
-                    sleep(2)
-                    browser.quit()
+                    endProcess()
                 case "y":
                     print("\n\tContinuing process...")
+                    return
                 case _:
                     print("\n\tContinuing process...")
+                    return
     except:
         print("\n\tNo test detected.")
-        return
+        return False
 
 
 def checkForNewCourseware(initCoursewareList):
@@ -103,19 +105,12 @@ def checkForNewCourseware(initCoursewareList):
     # Check if there is a new courseware
     if len(initCoursewareList) < len(newCoursewareList):
         print("\n\tNew courseware detected.")
-        return newCoursewareList
-    else:
-        print("\n\tNo new courseware detected.")
-
-
-def runTask(initCoursewareList):
-    while True:
-        initCoursewareList = checkForNewCourseware(initCoursewareList)
         clickCourseware = browser.find_element(
             By.XPATH, f'//p[text()="{initCoursewareList[-1]}"]'
         )
         clickCourseware.click()
-        checkIfTest()
+
+        sleep(3)
 
         try:
             if browser.find_element(By.TAG_NAME, "video"):
@@ -123,92 +118,39 @@ def runTask(initCoursewareList):
                 writeToTextAndPlay(video)
         except Exception as e:
             print("\n\tNo video detected.")
+        return newCoursewareList
+    else:
+        print("\n\tNo new courseware detected.")
+        return newCoursewareList
 
 
-sleep(10)
+def runTask():
+    # Initiate the list of currently available coursewares
+    initCoursewareList = []
+    courseware = browser.find_elements(By.XPATH, '//li[@style="cursor: pointer;"]')
+    for course in courseware:
+        initCoursewareList.append(course.text)
+    # Check if there is a new courseware
+    newCoursewareList = checkForNewCourseware(initCoursewareList)
+
+    sleep(3)
+
+    # Check if there is a test
+    checkIfTest()
+
+    if len(initCoursewareList) == len(newCoursewareList):
+        print("\n\tVideo is currently playing.")
+        sleep(60)
+        runTask()
+
+
+print("\n\tProcess started.")
+runTask()
+
+print("\n\tProcess is ending.")
 browser.quit()
 
 end = time.time()
 print(
     "\n\tTask finished successfully. \n\t" + str(end - start) + " seconds has elapsed."
 )
-
-# clickCourseware = browser.find_element(
-#     By.XPATH, f'//p[text()="{initCoursewareList[1]}"]'
-# )
-# clickCourseware.click()
-
-
-# counter = 0
-# while True:
-#     if browser.find_elements(By.CLASS_NAME, "map-title"):
-#         # Click the first element found to close it as it is open when going to the webpage
-#         buttonExpand = browser.find_element(By.CLASS_NAME, "map-title")
-#         buttonExpand.click()
-#         break
-#     else:
-#         # Sleep is needed to have time to load the webpage
-#         if counter > 3:
-#             break
-#         sleep(1)
-#     counter += 1
-
-# # sleep(random.randint(180, 240) / 1000), uncomment this for input delay incase of undesirable result
-# buttonExpand = browser.find_elements(By.CLASS_NAME, "map-title")
-# for button in buttonExpand:
-#     button.click()
-
-# page = browser.page_source
-# soup = BeautifulSoup(page, "html.parser")
-
-# try:
-#     # Create a text file to store the items for copy & paste
-#     # Option to overwrite or append to tasks.txt
-#     chmod = input("\n\tAppend? It will overwrite if not. [ Y / N ]\n\t")
-#     match chmod:
-#         case "N":
-#             textFile = open("tasks.txt", "w", encoding="utf-8")
-#             print("\n\tOverwriting tasks.txt...")
-#         case "n":
-#             textFile = open("tasks.txt", "w", encoding="utf-8")
-#             print("\n\tOverwriting tasks.txt...")
-#         case "Y":
-#             textFile = open("tasks.txt", "a", encoding="utf-8")
-#             print("\n\tAppending to tasks.txt...")
-#         case "y":
-#             textFile = open("tasks.txt", "a", encoding="utf-8")
-#             print("\n\tAppending to tasks.txt...")
-#         case _:
-#             textFile = open("tasks.txt", "a", encoding="utf-8")
-#             print("\n\tAppending to tasks.txt...")
-
-#     # Get the titles of each div block
-#     h3Titles = soup.find_all("h3", class_="big-block-title")
-#     for _title in h3Titles:
-#         textFile.write(_title.get_text())
-#         textFile.write("\n")
-#     textFile.write("\n\n")
-
-#     # Looping through the Python List of unorderedList to find all of the child lists
-#     unorderedList = soup.find_all("ul", class_="map-challenges-ul")
-#     for _unorderedList in unorderedList:
-#         childLists = _unorderedList.find_all("li")
-#         # Loop through the child lists to find all of the anchor tags with the texts
-#         for _list in childLists:
-#             anchorTags = _list.find("a")
-#             textFile.write(anchorTags.find(text=True, recursive=False))
-#             textFile.write("\n")
-#         textFile.write("\n")
-#     textFile.write(
-#         "____________________________________________________________________________________________________________"
-#     )
-#     textFile.write(
-#         "____________________________________________________________________________________________________________\n\n\n"
-#     )
-# except Exception as e:
-#     print(e)
-#     textFile.close()
-#     browser.quit()
-
-# textFile.close()
-# browser.quit()
