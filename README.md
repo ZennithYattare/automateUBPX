@@ -12,6 +12,7 @@ I made this as I don't like the video player they used and the inconsistent vide
 -   Saves the video URLs to a text file
 
 **You need to accomplish the Privacy Notice or mark it as complete first before running this.**
+**For the best chance of running without bugs/issues, don't run this script while you are on a Test.**
 
 ## Modules used:
 
