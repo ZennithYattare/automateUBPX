@@ -57,6 +57,11 @@ try:
         video = browser.find_element(By.TAG_NAME, "video")
         video.click()
         print("\n\tVideo is currently playing.")
+        videoSrc = video.get_attribute("src")
+        textFile = open("videoURLs.txt", "a", encoding="utf-8")
+        textFile.write(videoSrc)
+        textFile.write("\n")
+        textFile.close()
 except Exception as e:
     print("\n\tNo video detected.")
 
