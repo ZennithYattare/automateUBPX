@@ -1,5 +1,5 @@
 <!-- @format -->
-**You need to accomplish the Privacy Notice or mark it as complete first before running this.**
+**You need to be enrolled to the Blockchain Development Program and accomplish the Privacy Notice or mark it as complete first before running this.**
 
 **For the best chance of running without bugs/issues, don't run this script while you are on a Test. It should work for the most part...**
 
