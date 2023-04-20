@@ -56,6 +56,7 @@ try:
     if browser.find_element(By.TAG_NAME, "video"):
         video = browser.find_element(By.TAG_NAME, "video")
         video.click()
+        print("\n\tVideo is currently playing.")
 except Exception as e:
     print("\n\tNo video detected.")
 
@@ -66,6 +67,7 @@ def endProcess():
 
 
 def writeToTextAndPlay(video):
+    print("\n\tVideo is currently playing.")
     video.click()
     # get src attribute of video
     videoSrc = video.get_attribute("src")
@@ -98,18 +100,14 @@ def checkIfTest():
 
 
 def checkForNewCourseware(initCoursewareList):
-    newCoursewareList = []
-    # Get the list of current coursewares and append it to the list
-    courseware = browser.find_elements(By.XPATH, '//li[@style="cursor: pointer;"]')
-    for course in courseware:
-        newCoursewareList.append(course.text)
-    # Check if there is a new courseware
-    if len(initCoursewareList) < len(newCoursewareList):
+    # Since UPBXcellerator will automatically go to the next video when the current video is finished, we can check if the current video is in the initCoursewareList
+    currentCourseware = browser.find_element(
+        By.XPATH,
+        '//li[@style="cursor: pointer; background-color: rgba(249, 141, 38, 0.24);"]',
+    )
+
+    if currentCourseware.text not in initCoursewareList:
         print("\n\tNew courseware detected.")
-        clickCourseware = browser.find_element(
-            By.XPATH, f'//p[text()="{initCoursewareList[-1]}"]'
-        )
-        clickCourseware.click()
 
         sleep(3)
 
@@ -119,30 +117,37 @@ def checkForNewCourseware(initCoursewareList):
                 writeToTextAndPlay(video)
         except Exception as e:
             print("\n\tNo video detected.")
-        return newCoursewareList
+        return
     else:
         print("\n\tNo new courseware detected.")
-        return newCoursewareList
+        return
 
 
 def runTask():
-    # Initiate the list of currently available coursewares
+    # Initiate the list of currently available coursewares, and append the current courseware
     initCoursewareList = []
     courseware = browser.find_elements(By.XPATH, '//li[@style="cursor: pointer;"]')
     for course in courseware:
         initCoursewareList.append(course.text)
+
+    currentCourseware = browser.find_element(
+        By.XPATH,
+        '//li[@style="cursor: pointer; background-color: rgba(249, 141, 38, 0.24);"]',
+    )
+
+    initCoursewareList.append(currentCourseware.text)
+
+    sleep(5)
+
     # Check if there is a new courseware
-    newCoursewareList = checkForNewCourseware(initCoursewareList)
+    checkForNewCourseware(initCoursewareList)
 
     sleep(3)
 
     # Check if there is a test
     checkIfTest()
 
-    if len(initCoursewareList) == len(newCoursewareList):
-        print("\n\tVideo is currently playing.")
-        sleep(60)
-        runTask()
+    runTask()
 
 
 print("\n\tProcess started.")
