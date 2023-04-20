@@ -8,7 +8,7 @@ I made this as I don't like the video player they used and the inconsistent vide
 
 ## Function(s) of the automateUBPX for UBP Xcellerator Courses Script
 
--   Requests the user for their username and password
+-   Hardcode your username and password credentials (or uncomment the input in the code)
 -   Shows time elapsed of the program runtime at the end of program execution
 -   Saves the video URLs to a text file
 
@@ -25,4 +25,17 @@ I made this as I don't like the video player they used and the inconsistent vide
 ```
 pip install selenium
 pip install beautifulsoup4
+```
+
+## Instruction:
+Change 'firefox' to the browser you have installed. You may check https://www.selenium.dev/documentation/webdriver/browsers/ for more information
+For example, I use Firefox:
+```
+from selenium.webdriver.firefox.options import Options
+browser = webdriver.Firefox(options=options)
+```
+But for Chrome, it would be:
+```
+from selenium.webdriver.chrome.options import Options
+browser = webdriver.Chrome(options=options)
 ```
