@@ -1,5 +1,6 @@
 # user-made ignore parameter
 *.txt
+data.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
