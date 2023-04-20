@@ -137,7 +137,7 @@ def runTask():
 
     initCoursewareList.append(currentCourseware.text)
 
-    sleep(5)
+    sleep(60)
 
     # Check if there is a new courseware
     checkForNewCourseware(initCoursewareList)
