@@ -3,6 +3,7 @@
 
 import sys
 import time
+import data
 from time import sleep
 
 from bs4 import BeautifulSoup
@@ -27,8 +28,8 @@ browser.get(
 # You can change these details to hardcode your login details
 # username = input("\n\tEnter your username: ")
 # password = input("\n\tEnter your password: ")
-username = "Crept6114"
-password = "Childcare-Harbor-Ethically7"
+username = f"{data.username}"
+password = f"{data.password}"
 
 loginButton = browser.find_element(By.CLASS_NAME, "button-app")
 loginButton.click()
