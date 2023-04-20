@@ -1,4 +1,6 @@
 <!-- @format -->
+**You need to accomplish the Privacy Notice or mark it as complete first before running this.**
+
 **For the best chance of running without bugs/issues, don't run this script while you are on a Test. It should work for the most part...**
 
 # automateUBPX for UBP Xcellerator Courses
@@ -11,8 +13,6 @@ I made this as I don't like the video player they used and the inconsistent vide
 -   Hardcode your username and password credentials (or uncomment the input in the code)
 -   Shows time elapsed of the program runtime at the end of program execution
 -   Saves the video URLs to a text file
-
-**You need to accomplish the Privacy Notice or mark it as complete first before running this.**
 
 ## Modules used:
 
