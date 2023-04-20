@@ -90,9 +90,21 @@ def checkIfTest():
                     endProcess()
                 case "y":
                     print("\n\tContinuing process...")
+                    try:
+                        if browser.find_element(By.TAG_NAME, "video"):
+                            video = browser.find_element(By.TAG_NAME, "video")
+                            writeToTextAndPlay(video)
+                    except Exception as e:
+                        print("\n\tNo video detected.")
                     return
                 case _:
                     print("\n\tContinuing process...")
+                    try:
+                        if browser.find_element(By.TAG_NAME, "video"):
+                            video = browser.find_element(By.TAG_NAME, "video")
+                            writeToTextAndPlay(video)
+                    except Exception as e:
+                        print("\n\tNo video detected.")
                     return
     except:
         print("\n\tNo test detected.")
