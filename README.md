@@ -39,7 +39,7 @@ But for Chrome, it would be:
 from selenium.webdriver.chrome.options import Options
 browser = webdriver.Chrome(options=options)
 ```
-Either put your username and password into the main.py or create a data.py file with the variable "username" and "password", for example:
+Either put your username and password into the main.py ("username" & "password") or create a data.py file with the variable "username" and "password" as the current main.py has an import for a file called data.py, for example:
 ```
 username = "Nuggets"
 password = "iAmASensitivePassword1234"
